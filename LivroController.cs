@@ -34,12 +34,75 @@ namespace Biblioteca
 
         public void ExecutarCRUD()
         {
-            this._livroView.MostrarFormulario();
-            this._livro = this._livroView.EntrarDados("CADASTRO");
+            LivroModel livro = new LivroModel();
+            LivroView view = new LivroView();
+            string resp;
 
-            this._colecaolivros.Add(this._livro);
+            view.MostrarFormulario();
+            view.EntrarDados("PK", livro);
 
-            Console.ReadKey();
+            bool achei = this.Buscar(livro.Isbn);
+
+            if (!achei)
+            {
+                resp = view.Perguntar("ISBN não encontrado. Deseja cadastrar? (S/N): ");
+                if (resp.ToLower() == "s")
+                {
+                    view.EntrarDados("DT", livro);
+
+                    resp = view.Perguntar("Confirma o cadastro? (S/N)");
+
+                    if (resp.ToLower() == "s")
+                    {
+                        this._colecaolivros.Add(livro);
+                    }
+                }
+            }
+            else
+            {
+                view.MostrarDados(this._colecaolivros[this._posicao]);
+
+                resp = view.Perguntar("Deseja Alterar/Excluir/Voltar (A/E/V) : ");
+
+                if (resp.ToLower() == "a")
+                {
+                    view.EntrarDados("DT", livro);
+
+                    resp = view.Perguntar("Confirma a alteração? (S/N) : ");
+
+                    if (resp.ToLower() == "s")
+                    {
+                        this._colecaolivros[this._posicao] = livro;
+                    }
+                }
+                else if (resp.ToLower() == "e")
+                {
+                    resp = view.Perguntar("Confirma a exclusão? (S/N) : ");
+
+                    if (resp.ToLower() == "s")
+                    {
+                        this._colecaolivros.RemoveAt(this._posicao);
+                    }
+                }
+            }
+        }
+
+
+
+        private bool Buscar(string isbn)
+        {
+            bool encontrei = false;
+
+            for (int i = 0; i < this._colecaolivros.Count; i++)
+            {
+                if (this._colecaolivros[i].Isbn == isbn)
+                {
+                    this._posicao = i;
+                    encontrei = true;
+                    break;
+                }
+            }
+            return encontrei;
         }
     }
 }

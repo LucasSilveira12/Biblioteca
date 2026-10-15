@@ -9,7 +9,7 @@ namespace Biblioteca
     internal class LivroView
     {
         // atributos
-        private int _colIni, _linIni, _colFin, _linFin;
+        private int _colIni, _linIni, _colFin, _linFin, _colDados, _linDados;
         private List<string> _campos;
 
         // construtor
@@ -31,6 +31,8 @@ namespace Biblioteca
             this._linFin = _linIni + this._campos.Count + 1 + 2;
             // +1 para colocar o traçado horizontal na linha após o último campo
             // +2 para podermos usar um Título e um espaço para perguntar
+            this._colDados = this._colIni + this._campos[0].Length + 1;
+            this._linDados = this._linIni + 2;
         }
 
         public void MostrarFormulario()
@@ -57,30 +59,56 @@ namespace Biblioteca
 
             if (qual == "PK")
             {
-                Console.SetCursorPosition(
-                    this._colIni + 1 + this._campos[0].Length,
-                    this._linIni + 2);
-                obj.Isbn = Console.ReadLine(); 
-            }
-            else
-            {
-                Console.SetCursorPosition(this._colIni + 1 + this._campos[0].Length, this._linIni + 2);
+                Console.SetCursorPosition(this._colDados, this._linDados);
                 obj.Isbn = Console.ReadLine();
+            }
+            else if(qual == "DT")
+            {
+                Tela t = new Tela();
+                t.LimparArea(_colDados, _linDados + 1, _colFin - 1, _linFin - 1);
 
-                Console.SetCursorPosition(this._colIni + 1 + this._campos[0].Length, this._linIni + 3);
+                Console.SetCursorPosition(this._colDados, this._linDados + 1);
                 obj.Titulo = Console.ReadLine();
 
-                Console.SetCursorPosition(this._colIni + 1 + this._campos[0].Length, this._linIni + 4);
+                Console.SetCursorPosition(this._colDados, this._linDados + 2);
                 obj.Autor = Console.ReadLine();
 
-                Console.SetCursorPosition(this._colIni + 1 + this._campos[0].Length, this._linIni + 5);
+                Console.SetCursorPosition(this._colDados, this._linDados + 3);
                 obj.Genero = Console.ReadLine();
 
-                Console.SetCursorPosition(this._colIni + 1 + this._campos[0].Length, this._linIni + 6);
+                Console.SetCursorPosition(this._colDados, this._linDados + 4);
                 obj.Paginas = Convert.ToInt32(Console.ReadLine());
             }
+        }
 
-                return obj;
+        public void MostrarDados(LivroModel livro)
+        {
+
+            Console.SetCursorPosition(this._colDados, this._linDados);
+            Console.Write(livro.Isbn);
+
+            Console.SetCursorPosition(this._colDados, this._linDados + 1);
+            Console.Write(livro.Titulo);
+
+            Console.SetCursorPosition(this._colDados, this._linDados + 2);
+            Console.Write(livro.Autor);
+
+            Console.SetCursorPosition(this._colDados, this._linDados + 3);
+            Console.Write(livro.Genero);
+
+            Console.SetCursorPosition(this._colDados, this._linDados + 4);
+            Console.Write(livro.Paginas);
+        }
+
+        public string Perguntar(string pergunta)
+        {
+            string resposta = "";
+
+            Console.SetCursorPosition(this._colIni + 1, this._linFin - 1);
+            Console.Write(pergunta);
+            resposta = Console.ReadLine();
+
+            return resposta;
         }
     }
 }
