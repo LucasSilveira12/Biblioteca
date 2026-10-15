@@ -78,6 +78,7 @@ namespace Biblioteca
                 Console.SetCursorPosition(this._colDados, this._linDados + 4);
                 livro.Paginas = Convert.ToInt32(Console.ReadLine());
             }
+            return livro;
         }
 
         public void MostrarDados(LivroModel livro)
