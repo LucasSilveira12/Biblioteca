@@ -21,10 +21,9 @@ namespace Biblioteca
             this._campos.Add("Autor     :");
             this._campos.Add("Género    :");
             this._campos.Add("Páginas   :");
-            this._campos.Add("Editora   :");
 
-            this._colIni = 22;
-            this._linIni = 2;
+            this._colIni = 18;
+            this._linIni = 4;
             this._colFin = _colIni + this._campos[0].Length + 1 + 30;
             // +1 para colocar o traçado vertical direito depois dos :
             // +30 para ter espaço para o usuário digitar os dados
@@ -53,14 +52,14 @@ namespace Biblioteca
             }
         }
 
-        public LivroModel EntrarDados(string qual)
+        public LivroModel EntrarDados(string qual, LivroModel livro)
         {
             LivroModel obj = new LivroModel();
 
             if (qual == "PK")
             {
                 Console.SetCursorPosition(this._colDados, this._linDados);
-                obj.Isbn = Console.ReadLine();
+                livro.Isbn = Console.ReadLine();
             }
             else if(qual == "DT")
             {
@@ -68,16 +67,16 @@ namespace Biblioteca
                 t.LimparArea(_colDados, _linDados + 1, _colFin - 1, _linFin - 1);
 
                 Console.SetCursorPosition(this._colDados, this._linDados + 1);
-                obj.Titulo = Console.ReadLine();
+                livro.Titulo = Console.ReadLine();
 
                 Console.SetCursorPosition(this._colDados, this._linDados + 2);
-                obj.Autor = Console.ReadLine();
+                livro.Autor = Console.ReadLine();
 
                 Console.SetCursorPosition(this._colDados, this._linDados + 3);
-                obj.Genero = Console.ReadLine();
+                livro.Genero = Console.ReadLine();
 
                 Console.SetCursorPosition(this._colDados, this._linDados + 4);
-                obj.Paginas = Convert.ToInt32(Console.ReadLine());
+                livro.Paginas = Convert.ToInt32(Console.ReadLine());
             }
         }
 

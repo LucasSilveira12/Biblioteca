@@ -10,9 +10,11 @@ namespace Biblioteca
     {
         // atributos
         private List<LivroModel> _colecaolivros;
-        private LivroModel _livro;
+
         private int _posicao;
+
         private LivroView _livroView;
+        private LivroModel _livro;
 
         // construtor
         public LivroController()
@@ -86,8 +88,6 @@ namespace Biblioteca
                 }
             }
         }
-
-
 
         private bool Buscar(string isbn)
         {
