@@ -21,7 +21,6 @@ namespace Biblioteca
             opcoes.Add("2 - Alunos       ");
             opcoes.Add("3 - Emprestimos  ");
             opcoes.Add("4 - Relatórios   ");
-            opcoes.Add("5 - Gráficos     ");
             opcoes.Add("0 - Sair         ");
 
             string opcao;

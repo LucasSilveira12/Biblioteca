@@ -10,16 +10,11 @@ namespace Biblioteca
     {
         // atributos
         private List<AlunoModel> _colecaoalunos;
-        private AlunoModel _alunos;
-        private int _posicao;
-        private AlunoView _alunoView;
 
+        private int _posicao;
         // construtor
         public AlunoController()
         {
-            this._alunoView = new AlunoView();
-            this._alunos = new AlunoModel();
-
             this._colecaoalunos = new List<AlunoModel>();
             this._colecaoalunos.Add(
                 new AlunoModel(
@@ -33,10 +28,98 @@ namespace Biblioteca
 
         public void ExecutarCRUD()
         {
-            this._alunoView.MostrarFormulario();
-            this._alunos = this._alunoView.EntrarDados("CADASTRO");
+            AlunoModel aluno = new AlunoModel();
+            AlunoView view = new AlunoView();
+            string resp;
 
-            this._colecaoalunos.Add(this._alunos);
+            view.MostrarFormulario();
+
+            // perguntar o código
+            view.EntrarDados("PK", aluno);
+
+            // busca pelo codigo
+            bool achei = this.Buscar(aluno.Matricula);
+
+            // se o codigo NAO FOI encontrado
+            if (!achei)
+            {
+                // informa que NAO EXISTE e pergunta se deseja cadastrar
+                resp = view.Perguntar("Matricula não encontrada. Deseja cadastrar? (S/N): ");
+
+                // se SIM
+                if (resp.ToLower() == "s")
+                {
+                    // pergunta demais dados
+                    view.EntrarDados("DT", aluno);
+
+                    // pergunta se confirma o cadastro
+                    resp = view.Perguntar("Confirma o cadastro? (S/N)");
+
+                    // se SIM
+                    if (resp.ToLower() == "s")
+                    {
+                        // adiciona o novo registro
+                        this._colecaoalunos.Add(aluno);
+                    }
+
+                }
+            }
+            // se o codigo FOI encontrado
+            else
+            {
+                // mostra os dados do registro encontrado
+                view.MostrarDados(this._colecaoalunos[this._posicao]);
+
+                // pergunta se deseja alterar/excluir/voltar
+                resp = view.Perguntar("Deseja Alterar/Excluir/Voltar (A/E/V) : ");
+
+                // se desejar ALTERAR
+                if(resp.ToLower() == "a")
+                {
+                    // pergunta os novos dados
+                    view.EntrarDados("DT", aluno);
+                    // pergunta se confirma alteração
+                    resp = view.Perguntar("Confirma a alteração? (S/N) : ");
+                    // se SIM
+                    if (resp.ToLower() == "s")
+                    {
+                        // atualiza dos dados do registro
+                        this._colecaoalunos[this._posicao] = aluno;
+                    }
+                }
+
+                // se deseja EXCLUIR
+                else if (resp.ToLower() == "e")
+                {
+                    // pergunta se confirma exclusao
+                    resp = view.Perguntar("Confirma a exclusão? (S/N) : ");
+                    // se SIM
+                    if (resp.ToLower() == "s")
+                    {
+                        // exclui o registro
+                        this._colecaoalunos.RemoveAt(this._posicao);
+                    }
+                }
+            }
         }
+                
+            
+
+        private bool Buscar(string matricula)
+        {
+            bool encontrei = false;
+
+            for(int i = 0; i < this._colecaoalunos.Count; i++)
+            {
+                if (this._colecaoalunos[i].Matricula == matricula)
+                {
+                    this._posicao = i;
+                    encontrei = true;
+                    break;
+                }
+            }
+            return encontrei;
+        }
+
     }
 }
